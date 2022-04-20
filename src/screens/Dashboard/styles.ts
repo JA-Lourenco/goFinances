@@ -26,7 +26,8 @@ export const UserWrapper = styled.View`
     align-items: center;
 
     /* getStatusBarHeight(): For iOS, dealing with extra statusbar height */
-    margin-top: ${Platform.OS === 'ios' ? getStatusBarHeight() + RFValue(28) : RFValue(56)}px;
+    margin-top: ${Platform.OS === 'ios' ? 
+        getStatusBarHeight() + RFValue(28) : RFValue(56)}px;
 `
 
 export const UserInfo = styled.View`
@@ -81,4 +82,8 @@ export const Title = styled.Text`
     font-size: ${RFValue(18)}px;
     font-family: ${({ theme }) => theme.fonts.regular};
     margin-bottom: 16px;
+`
+
+export const TransactionsList = styled.FlatList`
+    
 `
