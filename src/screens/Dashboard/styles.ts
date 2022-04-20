@@ -4,6 +4,7 @@ import Feather from 'react-native-vector-icons/Feather'
 
 // getStatusBarHeight: For iOS, dealing with extra statusbar height
 import { getStatusBarHeight } from 'react-native-iphone-x-helper'
+import { Platform } from 'react-native'
 
 export const Container = styled.View`
     flex: 1;
@@ -14,6 +15,7 @@ export const Header = styled.View`
     width: 100%;
     height: ${RFPercentage(42)}px;
     background-color: ${({ theme }) => theme.colors.primary};
+    align-items: center;
 `
 
 export const UserWrapper = styled.View`
@@ -24,7 +26,7 @@ export const UserWrapper = styled.View`
     align-items: center;
 
     /* getStatusBarHeight(): For iOS, dealing with extra statusbar height */
-    margin-top: ${getStatusBarHeight() + RFValue(28)}px;
+    margin-top: ${Platform.OS === 'ios' ? getStatusBarHeight() + RFValue(28) : RFValue(56)}px;
 `
 
 export const UserInfo = styled.View`
