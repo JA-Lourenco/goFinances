@@ -3,8 +3,11 @@ import { RFPercentage, RFValue } from 'react-native-responsive-fontsize'
 import Feather from 'react-native-vector-icons/Feather'
 
 // getStatusBarHeight: For iOS, dealing with extra statusbar height
-import { getStatusBarHeight } from 'react-native-iphone-x-helper'
-import { Platform } from 'react-native'
+import { getBottomSpace, getStatusBarHeight } from 'react-native-iphone-x-helper'
+import { FlatListProps, Platform } from 'react-native'
+
+import { FlatList } from 'react-native'
+import { DataListProps } from '.'
 
 export const Container = styled.View`
     flex: 1;
@@ -84,6 +87,14 @@ export const Title = styled.Text`
     margin-bottom: 16px;
 `
 
-export const TransactionsList = styled.FlatList`
+export const TransactionsList = styled(
+    FlatList as new (props: FlatListProps<DataListProps>) => FlatList<DataListProps>
+    ).attrs({
+    showsVerticalScrollIndicator: false,
+    contentContainerStyle: {
+        paddingBottom: Platform.OS === 'ios' ? 
+            getBottomSpace() : 0 
+    }
+})`
     
 `
