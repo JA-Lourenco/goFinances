@@ -2,6 +2,7 @@ import React from 'react'
 
 import { HighlightCard } from '../../components/HighlightCard'
 import { TransactionCard, TransactionCardProps } from '../../components/TransactionCard'
+import { BorderlessButtonProps } from 'react-native-gesture-handler'
 
 import { 
     Container,
@@ -13,17 +14,22 @@ import {
     UserName,
     UserWrapper,
     Icon,
+    LogoutButton,
     HighlightCards,
     Transactions,
     Title,
-    TransactionsList
+    TransactionsList,
 } from './styles'
 
 export interface DataListProps extends TransactionCardProps {
     id: string
 }
 
-export function Dashboard() {
+interface LogoutButtonProps extends BorderlessButtonProps {
+    onPress: () => void
+}
+
+export function Dashboard({ ...rest } : LogoutButtonProps) {
     const data: DataListProps[] = [
         {
             id: '1',
@@ -75,7 +81,11 @@ export function Dashboard() {
                         </User>
                     </UserInfo>
 
-                    <Icon name='power'/>
+                    <LogoutButton
+                        {...rest}
+                    >
+                        <Icon name='power'/>
+                    </LogoutButton>
                 </UserWrapper>
             </Header>
 

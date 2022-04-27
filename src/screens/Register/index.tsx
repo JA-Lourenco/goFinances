@@ -36,8 +36,9 @@ const schema = Yup.object().shape({
     .required('Favor, informar o nome!'),
     amount: Yup
     .number()
-    .typeError('O valor da transação deve ser numérico!')
+    .required('O valor da transação deve ser numérico!')
     .positive('O valor não pode ser negativo!')
+    .typeError('O valor da transação deve ser numérico!')
 })
 
 export function Register() {

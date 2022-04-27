@@ -30,8 +30,9 @@ interface Props {
 export function CategorySelect({ 
     category,
     setCategory,
-    closeSelectCategory
+    closeSelectCategory,
 }: Props) {
+
     function handleSelectedCategory(category: Category) {
         setCategory(category)
     }
