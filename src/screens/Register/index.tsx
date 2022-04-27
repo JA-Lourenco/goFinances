@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { 
     Modal, 
     TouchableWithoutFeedback, 
@@ -15,6 +15,8 @@ import { Button } from '../../components/Form/Button'
 import { TransactionTypeButton } from '../../components/Form/TransactionTypeButton'
 import { CategorySelectButton } from '../../components/Form/CategorySelectButton'
 import { CategorySelect } from '../CategorySelect'
+
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { 
     Container,
@@ -49,6 +51,8 @@ export function Register() {
         name: 'categoria'
     })
 
+    const dataKey = '@gofinances:transactions'
+
     const {
         control,
         handleSubmit,
@@ -69,7 +73,7 @@ export function Register() {
         setCategoryModalOpen(false)
     }
 
-    function handleRegister(form: Partial<FormData>) {
+    async function handleRegister(form: Partial<FormData>) {
         if(!transactionType) {
             return Alert.alert('Selecione o tipo da transação')
         }
@@ -85,7 +89,24 @@ export function Register() {
         }
 
         console.log(data)
+
+        try {
+            await AsyncStorage.setItem(dataKey, JSON.stringify(data))
+
+        } catch (error) {
+            console.log('screens: Register\nfunction: handleRegister\nerror', error)
+            Alert.alert('Não foi possível realizar o cadastro!')
+        }
     }
+
+    useEffect(() => {
+        async function loadData() {
+            const loadedData = await AsyncStorage.getItem(dataKey)
+            console.log(JSON.parse(loadedData!))
+        }
+
+        loadData()
+    },[])
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
