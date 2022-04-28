@@ -1,12 +1,15 @@
 import React from 'react'
-import { ThemeProvider } from 'styled-components'
 
-import { NavigationContainer } from '@react-navigation/native'
 import { AppRoutes } from './src/routes/app.routes'
+
+import 'intl'
+import 'intl/locale-data/jsonp/pt-BR'
+import { NavigationContainer } from '@react-navigation/native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 import AppLoading from 'expo-app-loading'
 
+import { ThemeProvider } from 'styled-components'
 import {
   useFonts,
   Poppins_400Regular,
