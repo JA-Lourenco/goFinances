@@ -63,7 +63,7 @@ export function Dashboard({ ...rest } : LogoutButtonProps) {
 
         let entriesTotal = 0
         let costTotal = 0 
-        let total = entriesTotal - costTotal
+        
 
         const transactionsFormatted: DataListProps[] = transactionsResponse.map(
             (item: DataListProps) => {
@@ -98,6 +98,9 @@ export function Dashboard({ ...rest } : LogoutButtonProps) {
         )
 
         setTransactions(transactionsFormatted)
+        
+        let total = entriesTotal - costTotal
+
         setHighlightData({
             entries: {
                 amount: entriesTotal.toLocaleString('pt-BR', {
