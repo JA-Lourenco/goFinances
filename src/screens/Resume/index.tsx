@@ -5,11 +5,17 @@ import { HistoryCard } from '../../components/HistoryCard'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { categories } from '../../utils/categories';
 
+import { VictoryPie } from 'victory-native'
+import { RFValue } from 'react-native-responsive-fontsize';
+
+import { useTheme } from 'styled-components';
+
 import { 
   Container, 
   Header, 
   Title,
-  Content
+  Content,
+  CharContainer
 } from './styles'
 
 interface TransactionData {
@@ -23,12 +29,16 @@ interface TransactionData {
 interface CategoryData {
   key: string
   name: string
-  total: string
+  total: number
+  totalFormatted: string
   color: string
+  percent: string
 }
 
 export function Resume() {
   const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>([])
+
+  const theme = useTheme()
     
   async function loadData() {
     const dataKey = '@gofinances:transactions'
@@ -39,6 +49,10 @@ export function Resume() {
       .filter(
         (cost : TransactionData) => cost.type === 'negative'
       )
+
+    const costTotal = cost.reduce((acc: number, itemCost: TransactionData) => {
+      return acc + Number(itemCost.amount)
+    }, 0)
     
     const totalByCategory: CategoryData[] = []
 
@@ -52,16 +66,20 @@ export function Resume() {
       })
 
       if(categorySum > 0) {
-        const total = categorySum.toLocaleString('pt-BR', {
+        const totalFormatted = categorySum.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL'
         })
 
+        const percent = `${(categorySum / costTotal * 100).toFixed(0)}%`
+
         totalByCategory.push({
           key: category.key,
           name: category.name,
-          total,
-          color:category.color
+          total: categorySum,
+          color:category.color,
+          totalFormatted,
+          percent
         })
       }
     })
@@ -82,12 +100,29 @@ export function Resume() {
       </Header>
 
       <Content>
+        <CharContainer>
+          <VictoryPie 
+            data={totalByCategories}
+            colorScale={totalByCategories.map(category => category.color)}
+            style={{
+              labels: {
+                fontSize: RFValue(18),
+                fontWeight: 'bold',
+                fill: theme.colors.shape
+              }              
+            }}
+            labelRadius={100}
+            x='percent'
+            y='total'
+          />
+        </CharContainer>
+
         {
           totalByCategories.map(item => 
               <HistoryCard 
                 key={item.key}
                 title={item.name} 
-                amount={item.total} 
+                amount={item.totalFormatted} 
                 color={item.color}
               />
             )
