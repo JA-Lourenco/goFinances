@@ -7,6 +7,7 @@ import { categories } from '../../utils/categories';
 
 import { VictoryPie } from 'victory-native'
 import { RFValue } from 'react-native-responsive-fontsize';
+import { BorderlessButtonProps } from 'react-native-gesture-handler';
 
 import { useTheme } from 'styled-components';
 
@@ -15,7 +16,11 @@ import {
   Header, 
   Title,
   Content,
-  CharContainer
+  CharContainer,
+  MonthSelect,
+  MonthSelectButton,
+  MonthSelectIcon,
+  Month
 } from './styles'
 
 interface TransactionData {
@@ -35,7 +40,11 @@ interface CategoryData {
   percent: string
 }
 
-export function Resume() {
+interface MonthButtonProps extends BorderlessButtonProps {
+  onPress: () => void
+}
+
+export function Resume({ ...rest } : MonthButtonProps) {
   const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>([])
 
   const theme = useTheme()
@@ -100,6 +109,22 @@ export function Resume() {
       </Header>
 
       <Content>
+        <MonthSelect>
+          <MonthSelectButton {...rest}>
+            <MonthSelectIcon 
+              name='chevron-left'
+            />
+          </MonthSelectButton>
+
+          <Month>Maio</Month>
+
+          <MonthSelectButton {...rest}>
+            <MonthSelectIcon 
+              name='chevron-right'
+            />
+          </MonthSelectButton>
+        </MonthSelect>
+
         <CharContainer>
           <VictoryPie 
             data={totalByCategories}
