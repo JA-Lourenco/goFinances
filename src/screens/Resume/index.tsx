@@ -7,7 +7,8 @@ import { categories } from '../../utils/categories';
 
 import { VictoryPie } from 'victory-native'
 import { RFValue } from 'react-native-responsive-fontsize';
-import { BorderlessButtonProps } from 'react-native-gesture-handler';
+import { addMonths, subMonths, format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 
 import { useTheme } from 'styled-components';
 
@@ -16,11 +17,11 @@ import {
   Header, 
   Title,
   Content,
-  CharContainer,
   MonthSelect,
   MonthSelectButton,
   MonthSelectIcon,
-  Month
+  Month,
+  ChartContainer
 } from './styles'
 
 interface TransactionData {
@@ -40,14 +41,20 @@ interface CategoryData {
   percent: string
 }
 
-interface MonthButtonProps extends BorderlessButtonProps {
-  onPress: () => void
-}
-
-export function Resume({ ...rest } : MonthButtonProps) {
+export function Resume() {
+  const [selectedDate, setSelectedDate] = useState(new Date())
   const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>([])
 
   const theme = useTheme()
+
+  function handleChangedDate(action: 'next' | 'prev') {
+    if(action === 'next') {
+      setSelectedDate(addMonths(selectedDate, 1))
+    }
+    else if (action === 'prev'){
+      setSelectedDate(subMonths(selectedDate, 1))
+    }
+  }
     
   async function loadData() {
     const dataKey = '@gofinances:transactions'
@@ -56,7 +63,10 @@ export function Resume({ ...rest } : MonthButtonProps) {
 
     const cost = dataStoragedFormatted
       .filter(
-        (cost : TransactionData) => cost.type === 'negative'
+        (cost : TransactionData) => 
+          cost.type === 'negative' && 
+          new Date(cost.date).getMonth() === selectedDate.getMonth() &&
+          new Date(cost.date).getFullYear() === selectedDate.getFullYear()
       )
 
     const costTotal = cost.reduce((acc: number, itemCost: TransactionData) => {
@@ -98,7 +108,7 @@ export function Resume({ ...rest } : MonthButtonProps) {
 
   useEffect(() => {
     loadData()
-  }, [])
+  }, [selectedDate])
 
   return (
     <Container>
@@ -110,22 +120,34 @@ export function Resume({ ...rest } : MonthButtonProps) {
 
       <Content>
         <MonthSelect>
-          <MonthSelectButton {...rest}>
+          <MonthSelectButton 
+            onPress={() => handleChangedDate('prev')}
+          >
             <MonthSelectIcon 
               name='chevron-left'
             />
           </MonthSelectButton>
 
-          <Month>Maio</Month>
+          <Month>
+            {
+              format(
+                selectedDate, 
+                'MMMM, yyyy', 
+                {locale: ptBR}
+              )
+            }
+          </Month>
 
-          <MonthSelectButton {...rest}>
+          <MonthSelectButton 
+            onPress={() => handleChangedDate('next')}
+          >
             <MonthSelectIcon 
               name='chevron-right'
             />
           </MonthSelectButton>
         </MonthSelect>
 
-        <CharContainer>
+        <ChartContainer>
           <VictoryPie 
             data={totalByCategories}
             colorScale={totalByCategories.map(category => category.color)}
@@ -140,7 +162,7 @@ export function Resume({ ...rest } : MonthButtonProps) {
             x='percent'
             y='total'
           />
-        </CharContainer>
+        </ChartContainer>
 
         {
           totalByCategories.map(item => 

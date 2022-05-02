@@ -1,7 +1,7 @@
 import styled from 'styled-components/native'
 import { RFValue } from 'react-native-responsive-fontsize'
-import { BorderlessButton } from 'react-native-gesture-handler'
 import Feather from 'react-native-vector-icons/Feather'
+
 
 export const Container = styled.View`
     flex: 1;
@@ -32,11 +32,6 @@ export const Content = styled.ScrollView.attrs({
     margin-bottom: auto;
 `
 
-export const CharContainer = styled.View`
-    width: 100%;
-    align-items: center;
-`
-
 export const MonthSelect = styled.View`
     width: 100%;
     flex-direction: row;
@@ -44,7 +39,7 @@ export const MonthSelect = styled.View`
     align-items: center;
 `
 
-export const MonthSelectButton = styled(BorderlessButton)``
+export const MonthSelectButton = styled.TouchableOpacity``
 
 export const MonthSelectIcon = styled(Feather)`
     font-size: ${RFValue(24)}px;
@@ -53,4 +48,9 @@ export const MonthSelectIcon = styled(Feather)`
 export const Month = styled.Text`
     font-family: ${({ theme }) => theme.fonts.regular};
     font-size: ${RFValue(20)}px;
+`
+
+export const ChartContainer = styled.View`
+    width: 100%;
+    align-items: center;
 `
