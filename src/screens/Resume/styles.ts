@@ -22,11 +22,12 @@ export const Title = styled.Text`
 `
 
 export const Content = styled.ScrollView.attrs({
+    showsVerticalScrollIndicator: false,
     contentContainerStyle: { 
-        flex: 1,
         padding: 24 
-    }
+    }    
 })`
+    margin-bottom: auto;
 `
 
 export const CharContainer = styled.View`
