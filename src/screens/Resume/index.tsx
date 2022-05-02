@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 
 import { HistoryCard } from '../../components/HistoryCard'
 
@@ -12,6 +12,7 @@ import { addMonths, subMonths, format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 
 import { useTheme } from 'styled-components';
+import { useFocusEffect } from '@react-navigation/native';
 
 import { 
   Container, 
@@ -111,9 +112,9 @@ export function Resume() {
     setIsLoading(false)
   }
 
-  useEffect(() => {
+  useFocusEffect(useCallback(() => {
     loadData()
-  }, [selectedDate])
+  }, [selectedDate]))
 
   return (
     <Container>
