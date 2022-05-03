@@ -50,7 +50,7 @@ interface LogoutButtonProps extends BorderlessButtonProps {
 }
 
 export function Dashboard({ ...rest } : LogoutButtonProps) {
-    const [isLoading, setIsLoaging] = useState(true)
+    const [isLoading, setIsLoading] = useState(true)
     const [transactions, setTransactions] = useState<DataListProps[]>([])
     const [highlightData, setHighlightData] = useState<HighlightData>()
 
@@ -148,7 +148,7 @@ export function Dashboard({ ...rest } : LogoutButtonProps) {
             }
         })
 
-        setIsLoaging(false)
+        setIsLoading(false)
     }
 
     useEffect(() => {
