@@ -2,8 +2,6 @@ import styled from 'styled-components/native'
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize'
 import Feather from 'react-native-vector-icons/Feather'
 
-import { BorderlessButton } from 'react-native-gesture-handler'
-
 // getStatusBarHeight: For iOS, dealing with extra statusbar height
 import { getBottomSpace, getStatusBarHeight } from 'react-native-iphone-x-helper'
 import { FlatListProps, Platform } from 'react-native'
@@ -62,7 +60,7 @@ export const UserName = styled.Text`
     font-family: ${({ theme }) => theme.fonts.bold};
 `
 
-export const LogoutButton = styled(BorderlessButton)`
+export const LogoutButton = styled.TouchableOpacity`
 
 `
 

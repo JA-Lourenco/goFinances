@@ -6,11 +6,11 @@ import { useFocusEffect } from '@react-navigation/native'
 
 import { HighlightCard } from '../../components/HighlightCard'
 import { TransactionCard, TransactionCardProps } from '../../components/TransactionCard'
-import { BorderlessButtonProps } from 'react-native-gesture-handler'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { useTheme } from 'styled-components'
+import { useAuth } from '../../hooks/auth'
 
 import { 
     Container,
@@ -45,16 +45,13 @@ interface HighlightData {
     total: HighlightProps
 }
 
-interface LogoutButtonProps extends BorderlessButtonProps {
-    onPress: () => void
-}
-
-export function Dashboard({ ...rest } : LogoutButtonProps) {
+export function Dashboard() {
     const [isLoading, setIsLoading] = useState(true)
     const [transactions, setTransactions] = useState<DataListProps[]>([])
     const [highlightData, setHighlightData] = useState<HighlightData>()
 
     const theme = useTheme()
+    const { signOut } = useAuth()
 
     function getLastTransactionDate(
         collection : DataListProps[],
@@ -183,9 +180,7 @@ export function Dashboard({ ...rest } : LogoutButtonProps) {
                                 </User>
                             </UserInfo>
 
-                            <LogoutButton
-                                {...rest}
-                            >
+                            <LogoutButton onPress={signOut}>
                                 <Icon name='power'/>
                             </LogoutButton>
                         </UserWrapper>
