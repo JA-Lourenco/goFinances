@@ -51,7 +51,7 @@ export function Dashboard() {
     const [highlightData, setHighlightData] = useState<HighlightData>()
 
     const theme = useTheme()
-    const { signOut } = useAuth()
+    const { signOut, user } = useAuth()
 
     function getLastTransactionDate(
         collection : DataListProps[],
@@ -171,12 +171,12 @@ export function Dashboard() {
                         <UserWrapper>
                             <UserInfo>
                                 <Photo 
-                                    source={{uri: 'https://avatars.githubusercontent.com/u/93841387?v=4'}}
+                                    source={{uri: user.photo}}
                                 />
                                 
                                 <User>
                                     <UserGreeting>Olá,</UserGreeting>
-                                    <UserName>João Antonio</UserName>
+                                    <UserName>{user.name}</UserName>
                                 </User>
                             </UserInfo>
 
