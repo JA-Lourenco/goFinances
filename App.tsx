@@ -7,7 +7,7 @@ import { SignIn } from './src/screens/SignIn'
 
 import 'intl'
 import 'intl/locale-data/jsonp/pt-BR'
-import { NavigationContainer } from '@react-navigation/native'
+import { Routes } from './src/routes'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { StatusBar } from 'react-native'
 
@@ -37,17 +37,15 @@ export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1}}>
       <ThemeProvider theme={ theme }>
-        <NavigationContainer>
           <StatusBar 
             barStyle='light-content'
             backgroundColor="transparent"
             translucent
           />
-          {/* <AppRoutes /> */}
+          
           <AuthProvider>
-            <SignIn />
+            <Routes />
           </AuthProvider>
-        </NavigationContainer>
       </ThemeProvider>
     </GestureHandlerRootView>
   )

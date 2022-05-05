@@ -2,7 +2,8 @@ import {
     createContext, 
     ReactNode, 
     useContext, 
-    useState
+    useState,
+    useEffect
 } from 'react'
 
 import * as AuthSession from 'expo-auth-session'
@@ -41,6 +42,7 @@ export const AuthContext = createContext({} as IAuthContextData)
 
 function AuthProvider({ children } : AuthProviderProps) {
     const [user, setUser] = useState<User>({} as User)
+    const [userStorageLoading, setUserStorageLoading] = useState(true)
 
     const userStorageKey = '@gofinances:user'
 
@@ -100,6 +102,21 @@ function AuthProvider({ children } : AuthProviderProps) {
             throw new Error(error as string)
         }
     }
+
+    useEffect(() => {
+        async function loadUserStorageData() {
+            const userStoraged = await AsyncStorage.getItem(userStorageKey)
+
+            if(userStoraged) {
+                const userLogged = JSON.parse(userStoraged) as User
+                setUser(userLogged)
+            }
+
+            setUserStorageLoading(false)
+        }
+
+        loadUserStorageData()
+    }, [])
 
     return (
         <AuthContext.Provider value={{
