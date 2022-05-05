@@ -13,12 +13,14 @@ import {
     Alert 
 } from 'react-native'
 
+import { useAuth } from '../../hooks/auth'
 import { useForm } from 'react-hook-form'
+import { useNavigation } from '@react-navigation/native'
+
 import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import uuid from 'react-native-uuid'
-import { useNavigation } from '@react-navigation/native'
 
 import { 
     Container,
@@ -56,6 +58,8 @@ export function Register() {
         key: 'category',
         name: 'categoria'
     })
+
+    const { user } = useAuth()
 
     const navigation = useNavigation<NavigationProps>()
 
@@ -98,7 +102,7 @@ export function Register() {
         }
 
         try {
-            const dataKey = '@gofinances:transactions'
+            const dataKey = `gofinances:transactions_user:${user.id}`
             const data = await AsyncStorage.getItem(dataKey)
             const currentData = data ? JSON.parse(data) : []
 
