@@ -57,13 +57,16 @@ export function Dashboard() {
         collection : DataListProps[],
         type: 'positive' | 'negative'
     ) {
+        const collectionFiltered = collection.filter(
+            transaction => transaction.type === type
+        )
+
+        if(collectionFiltered.length === 0) {
+            return 0
+        }
 
         const lastTransaction = new Date(
-            Math.max.apply(Math, collection
-                .filter(
-                    transaction => transaction.type === type
-                )
-                .map(
+            Math.max.apply(Math, collectionFiltered.map(
                     transaction => new Date(transaction.date).getTime()
                 )
             )
@@ -117,7 +120,10 @@ export function Dashboard() {
 
         const lastEntriesDate = getLastTransactionDate(transactionsResponse, 'positive')
         const lastCostDate = getLastTransactionDate(transactionsResponse, 'negative')
-        const totalIntervalDate = `01 a ${lastCostDate}`
+
+        const totalIntervalDate = lastCostDate === 0 
+        ? `Não há transações`
+        : `01 a ${lastCostDate}`
         
         let total = entriesTotal - costTotal
 
@@ -127,14 +133,18 @@ export function Dashboard() {
                     style: 'currency',
                     currency: 'BRL'
                 }),
-                lastTransaction: `Última entrada dia ${lastEntriesDate}`
+                lastTransaction: lastEntriesDate === 0 
+                ? `Não há transações` 
+                : `Última entrada dia ${lastEntriesDate}`
             },
             cost: {
                 amount: costTotal.toLocaleString('pt-BR', {
                     style: 'currency',
                     currency: 'BRL'
                 }),
-                lastTransaction: `Última saída dia ${lastCostDate}`
+                lastTransaction: lastCostDate === 0 
+                ? `Não há transações`
+                : `Última saída dia ${lastCostDate}`
             },
             total: {
                 amount: total.toLocaleString('pt-BR', {
